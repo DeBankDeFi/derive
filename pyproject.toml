@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "pillar"
+version = "0.1.0"
+description = ""
+authors = ["DeBankDeFi <sre@debank.com>"]
+
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+configalchemy = "^0.5.5"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+pre-commit = "^2.20.0"
+black = "^22.6.0"
+mypy = "^0.961"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+files = "pillar"
+mypy_path = "pillar"
+namespace_packages = true
+explicit_package_bases = true
+show_error_codes = true
+strict = true
+enable_error_code = [
+    "ignore-without-code",
+    "redundant-expr",
+    "truthy-bool",
+]
