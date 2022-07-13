@@ -54,13 +54,13 @@ clean-build: ## remove build artifacts
 fmt:
 	poetry run black pillar tests
 
-lint: ## statick check
+lint: fmt ## statick check
 	poetry run black --check tests pillar
 
 	poetry run mypy
 
 test: ## run tests quickly with the default Python
-	pytest
+	poetry run pytest
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source pillar -m unittest discover -s tests

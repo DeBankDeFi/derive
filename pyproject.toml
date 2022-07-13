@@ -7,14 +7,28 @@ authors = ["DeBankDeFi <sre@debank.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.7"
 configalchemy = "^0.5.5"
+opentelemetry-sdk = "^1.11.1"
+opentelemetry-api = "^1.11.1"
+
+opentelemetry-sdk-extension-aws = { version = "^2.0", optional = true }
+opentelemetry-propagator-aws-xray = { version = "^1.0", optional = true }
+opentelemetry-exporter-otlp = { version = "^1.11", optional = true }
+protobuf = { version = "^3.10", optional = true }
+
+[tool.poetry.extras]
+otlp-aws-xray = ["opentelemetry-sdk-extension-aws", "opentelemetry-propagator-aws-xray", "opentelemetry-exporter-otlp", "protobuf"]
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 pre-commit = "^2.20.0"
 black = "^22.6.0"
 mypy = "^0.961"
+opentelemetry-sdk-extension-aws = "2.0.1"
+opentelemetry-propagator-aws-xray = "1.0.1"
+opentelemetry-exporter-otlp = "1.11.1"
+protobuf = "^3.10"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -23,10 +37,10 @@ build-backend = "poetry.core.masonry.api"
 [tool.mypy]
 files = "pillar"
 mypy_path = "pillar"
+ignore_missing_imports = true
 namespace_packages = true
-explicit_package_bases = true
 show_error_codes = true
-strict = true
+strict = false
 enable_error_code = [
     "ignore-without-code",
     "redundant-expr",
