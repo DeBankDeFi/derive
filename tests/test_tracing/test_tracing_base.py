@@ -1,29 +1,16 @@
 import unittest
 
-from pillar.trace import trace, set_tracer
-from tests import async_test
+from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.trace import INVALID_SPAN
 
-
-from opentelemetry import trace as opentelemetry_trace
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.sampling import (
-    ALWAYS_OFF,
-)
-from opentelemetry.trace.span import SpanContext, Span
-from opentelemetry.util import types
+from pillar.trace import trace, set_provider
+from tests import async_test
 
 
 class TracingBaseTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        provider = TracerProvider()
-        opentelemetry_trace.set_tracer_provider(provider)
-        set_tracer(provider.get_tracer("test"))
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        set_tracer(opentelemetry_trace.NoOpTracer())
+        set_provider(TracerProvider())
 
     def test_sync_context(self):
         with trace("parent") as parent_span:
