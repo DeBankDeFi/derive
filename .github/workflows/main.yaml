@@ -4,6 +4,7 @@ on:
   pull_request:
     paths-ignore:
       - 'docs/**'
+      - 'README.md'
       - '.github/workflows/docs.yml'
     branches:
       - '**'
@@ -18,13 +19,11 @@ jobs:
     runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        os: [Ubuntu, macOS, Windows]
+        os: [Ubuntu, macOS]
         python-version: ["3.7", "3.8", "3.9", "3.10"]
         include:
           - os: Ubuntu
             image: ubuntu-22.04
-          - os: Windows
-            image: windows-2022
           - os: macOS
             image: macos-12
       fail-fast: false
@@ -49,10 +48,6 @@ jobs:
       - name: Update PATH
         if: ${{ matrix.os != 'Windows' }}
         run: echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-      - name: Update Path for Windows
-        if: ${{ matrix.os == 'Windows' }}
-        run: echo "$APPDATA\Python\Scripts" >> $GITHUB_PATH
 
       - name: Configure poetry
         run: poetry config virtualenvs.in-project true
