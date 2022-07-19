@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-import platform
 import sys
 from multiprocessing import Manager, process, set_start_method
 from multiprocessing.managers import SyncManager
@@ -30,4 +29,5 @@ except ImportError:
 else:
     uwsgidecorators.postfork(_reset_children)
 
-os.register_at_fork(after_in_child=_reset_children)
+if not sys.platform.startswith("win"):
+    os.register_at_fork(after_in_child=_reset_children)
