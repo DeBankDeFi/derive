@@ -14,7 +14,7 @@ _tracer = opentelemetry_trace.get_tracer(__name__)
 def set_provider(provider: opentelemetry_trace.TracerProvider) -> None:
     opentelemetry_trace.set_tracer_provider(provider)
     global _tracer
-    _tracer = opentelemetry_trace.get_tracer(__name__)
+    _tracer = provider.get_tracer(__name__)
 
 
 def get_provider() -> opentelemetry_trace.TracerProvider:

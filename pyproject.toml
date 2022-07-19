@@ -1,11 +1,18 @@
 [tool.poetry]
 name = "pillar"
 version = "0.1.0"
-description = ""
+description = "The Python Observability Toolkit"
 authors = ["DeBankDeFi <sre@debank.com>"]
 
 readme = "README.md"
+license = "MIT"
 
+keywords = ["python", "observability", "opentelemetry"]
+
+classifiers = [
+    "Topic :: Software Development :: The Python Observability Toolkit",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
 [tool.poetry.dependencies]
 python = "^3.7,>=3.7.2"
 configalchemy = "^0.5.5"
@@ -23,7 +30,7 @@ otlp-aws-xray = ["opentelemetry-sdk-extension-aws", "opentelemetry-propagator-aw
 requests = ["opentelemetry-instrumentation-requests"]
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "^7.1.2"
 pre-commit = "^2.20.0"
 black = "^22.6.0"
 mypy = "^0.961"

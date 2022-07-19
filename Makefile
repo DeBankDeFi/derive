@@ -54,7 +54,7 @@ clean-build: ## remove build artifacts
 fmt:
 	poetry run black pillar tests
 
-lint: fmt ## statick check
+lint: ## statick check
 	poetry run black --check tests pillar
 
 	poetry run mypy
