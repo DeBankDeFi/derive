@@ -1,4 +1,11 @@
 import typing
+import sys
+import platform
+import os
+
+if sys.platform == "darwin" and platform.machine() == "arm64":
+    os.environ["GRPC_PYTHON_BUILD_SYSTEM_OPENSSL"] = "1"
+    os.environ["GRPC_PYTHON_BUILD_SYSTEM_ZLIB"] = "1"
 
 from configalchemy import BaseConfig
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter

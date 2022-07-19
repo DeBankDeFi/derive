@@ -23,7 +23,7 @@ otlp-aws-xray = ["opentelemetry-sdk-extension-aws", "opentelemetry-propagator-aw
 requests = ["opentelemetry-instrumentation-requests"]
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "^7.1.2"
 pre-commit = "^2.20.0"
 black = "^22.6.0"
 mypy = "^0.961"
