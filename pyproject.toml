@@ -1,11 +1,18 @@
 [tool.poetry]
 name = "pillar"
 version = "0.1.0"
-description = ""
+description = "The Python Observability Toolkit"
 authors = ["DeBankDeFi <sre@debank.com>"]
 
 readme = "README.md"
+license = "MIT"
 
+keywords = ["python", "observability", "opentelemetry"]
+
+classifiers = [
+    "Topic :: Software Development :: The Python Observability Toolkit",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
 [tool.poetry.dependencies]
 python = "^3.7,>=3.7.2"
 configalchemy = "^0.5.5"
