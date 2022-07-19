@@ -1,17 +1,20 @@
+import typing
+
 from configalchemy import BaseConfig
-from pillar.trace import set_tracer
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.propagate import set_global_textmap
+from opentelemetry.propagators.aws import AwsXRayPropagator
+from opentelemetry.sdk import resources
 from opentelemetry.sdk.extension.aws.trace import AwsXRayIdGenerator
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import (
-    BatchSpanProcessor,
-)
+from opentelemetry.sdk.trace import TracerProvider, SynchronousMultiSpanProcessor
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.trace.sampling import (
     ParentBasedTraceIdRatio,
     ParentBased,
     ALWAYS_ON,
 )
 
+from pillar import trace
 from pillar.integrations import BaseIntegration
 
 
@@ -37,8 +40,17 @@ class Integration(BaseIntegration):
                 sampler = ParentBased(ALWAYS_ON)
             else:
                 sampler = ParentBasedTraceIdRatio(self.config.SAMPLING_RATE)
-            tracer_provider = TracerProvider(
-                sampler=sampler, id_generator=AwsXRayIdGenerator()
+            origin_tracer = trace.get_tracer()
+            resource: typing.Optional[resources.Resource] = getattr(
+                origin_tracer, "resource", resources.Resource.create({})
             )
-            tracer_provider.add_span_processor(span_processor)
-            set_tracer(tracer_provider.get_tracer("aws-xray"))
+            tracer_provider = TracerProvider(
+                sampler=sampler,
+                resource=resource,
+                id_generator=AwsXRayIdGenerator(),
+                active_span_processor=typing.cast(
+                    SynchronousMultiSpanProcessor, span_processor
+                ),
+            )
+            trace.set_provider(tracer_provider)
+            set_global_textmap(AwsXRayPropagator())

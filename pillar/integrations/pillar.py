@@ -1,4 +1,3 @@
-import os
 import typing
 
 from opentelemetry.sdk import resources
@@ -20,10 +19,9 @@ class Integration(BaseIntegration):
     def setup_trace(self):
         tracer = trace.get_tracer()
         resource: typing.Optional[resources.Resource] = getattr(
-            tracer, "resource", None
+            tracer, "resource", Resource.create({})
         )
-        if resource is not None:
-            attributes: resources.Attributes = {
-                resources.SERVICE_NAME: self.config.PILLAR_SERVICE_NAME
-            }
-            setattr(tracer, "resource", resource.merge(Resource(attributes=attributes)))
+        attributes: resources.Attributes = {
+            resources.SERVICE_NAME: self.config.PILLAR_SERVICE_NAME
+        }
+        setattr(tracer, "resource", resource.merge(Resource(attributes=attributes)))

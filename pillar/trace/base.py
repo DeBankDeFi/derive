@@ -11,9 +11,14 @@ from opentelemetry.util import types
 _tracer = opentelemetry_trace.get_tracer(__name__)
 
 
-def set_tracer(tracer: opentelemetry_trace.Tracer) -> None:
+def set_provider(provider: opentelemetry_trace.TracerProvider) -> None:
+    opentelemetry_trace.set_tracer_provider(provider)
     global _tracer
-    _tracer = tracer
+    _tracer = opentelemetry_trace.get_tracer(__name__)
+
+
+def get_provider() -> opentelemetry_trace.TracerProvider:
+    return opentelemetry_trace.get_tracer_provider()
 
 
 def get_tracer() -> opentelemetry_trace.Tracer:

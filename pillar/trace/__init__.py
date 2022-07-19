@@ -1,1 +1,1 @@
-from pillar.trace.base import trace, set_tracer, get_tracer
+from pillar.trace.base import trace, set_provider, get_tracer

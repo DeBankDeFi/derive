@@ -7,7 +7,7 @@ authors = ["DeBankDeFi <sre@debank.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.7,>=3.7.2"
 configalchemy = "^0.5.5"
 opentelemetry-sdk = "^1.11.1"
 opentelemetry-api = "^1.11.1"
@@ -16,9 +16,11 @@ opentelemetry-sdk-extension-aws = { version = "^2.0", optional = true }
 opentelemetry-propagator-aws-xray = { version = "^1.0", optional = true }
 opentelemetry-exporter-otlp = { version = "^1.11", optional = true }
 protobuf = { version = "^3.10", optional = true }
+opentelemetry-instrumentation-requests = { version = "0.30b1", optional = true }
 
 [tool.poetry.extras]
 otlp-aws-xray = ["opentelemetry-sdk-extension-aws", "opentelemetry-propagator-aws-xray", "opentelemetry-exporter-otlp", "protobuf"]
+requests = ["opentelemetry-instrumentation-requests"]
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -40,6 +42,8 @@ mypy_path = "pillar"
 ignore_missing_imports = true
 namespace_packages = true
 show_error_codes = true
+install_types = true
+non_interactive = true
 strict = false
 enable_error_code = [
     "ignore-without-code",
