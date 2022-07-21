@@ -1,4 +1,6 @@
-# Pillar: The Python Observability Toolkit Bsed on OpenTelemetry
+# Pillar: The Python Observability Toolkit
+
+[![Tests Status](https://github.com/DeBankDeFi/pillar/workflows/Tests/badge.svg?branch=main&event=push)](https://github.com/DeBankDeFi/pillar/actions?query=workflow%3ATests+branch%3Amain+event%3Apush)
 
 ## What is Pillar?
 
