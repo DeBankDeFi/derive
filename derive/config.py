@@ -4,6 +4,6 @@ from configalchemy import BaseConfig
 
 
 class DefaultConfig(BaseConfig):
-    SERVICE_NAME = "pillar"
+    SERVICE_NAME = "derive"
 
     STATIC_RESOURCES: typing.Mapping[str, str] = {}

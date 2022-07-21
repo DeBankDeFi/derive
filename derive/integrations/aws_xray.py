@@ -3,7 +3,7 @@ import platform
 import sys
 import typing
 
-import pillar
+import derive
 
 if sys.platform == "darwin" and platform.machine() == "arm64":
     os.environ["GRPC_PYTHON_BUILD_SYSTEM_OPENSSL"] = "1"
@@ -23,8 +23,8 @@ from opentelemetry.sdk.trace.sampling import (
     ALWAYS_ON,
 )
 
-from pillar import trace
-from pillar.integrations import BaseIntegration
+from derive import trace
+from derive.integrations import BaseIntegration
 
 
 class DefaultConfig(BaseConfig):
@@ -39,10 +39,10 @@ class Integration(BaseIntegration):
         return "aws-xray"
 
     def __init__(
-        self, config: DefaultConfig, pillar_config: pillar.DefaultConfig
+        self, config: DefaultConfig, derive_config: derive.DefaultConfig
     ) -> None:
         self.config = config
-        self.pillar_config = pillar_config
+        self.derive_config = derive_config
 
     def setup_trace(self):
         if self.config.ENABLE:
@@ -58,7 +58,7 @@ class Integration(BaseIntegration):
             )
             resource = resource.merge(
                 resources.Resource.create(
-                    {resources.SERVICE_NAME: self.pillar_config.SERVICE_NAME}
+                    {resources.SERVICE_NAME: self.derive_config.SERVICE_NAME}
                 )
             )
             tracer_provider = TracerProvider(

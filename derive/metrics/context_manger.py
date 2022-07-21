@@ -4,7 +4,7 @@ from time import perf_counter as default_timer
 from typing import Type, Callable, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from pillar.metrics.metric.base import Counter, Gauge
+    from derive.metrics.metric.base import Counter, Gauge
 
 
 class ExceptionCounter(ContextDecorator):

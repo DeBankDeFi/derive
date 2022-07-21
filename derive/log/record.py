@@ -1,11 +1,11 @@
 import logging
 import typing
 
-from pillar.log.types import ArgsType, SysExcInfoType
-from pillar.trace import trace
+from derive.log.types import ArgsType, SysExcInfoType
+from derive.trace import trace
 
 
-class PillarLogRecord(logging.LogRecord):
+class deriveLogRecord(logging.LogRecord):
     trace_id: typing.Optional[str]
     attributes: typing.Dict[str, str]
 

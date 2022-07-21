@@ -6,8 +6,8 @@ from dataclasses import dataclass
 from multiprocessing.managers import BaseProxy, SyncManager
 from typing import Union, Iterable, Mapping, Optional, Sequence
 
-from pillar.metrics.collector import GlobalCollector
-from pillar.metrics.context_manger import InprogressTracker, Timer, ExceptionCounter
+from derive.metrics.collector import GlobalCollector
+from derive.metrics.context_manger import InprogressTracker, Timer, ExceptionCounter
 
 INF = float("inf")
 MINUS_INF = float("-inf")

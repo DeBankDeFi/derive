@@ -1,5 +1,5 @@
-from pillar.integrations import BaseIntegration
-from pillar.integrations import DidNotEnable
+from derive.integrations import BaseIntegration
+from derive.integrations import DidNotEnable
 
 try:
     import requests

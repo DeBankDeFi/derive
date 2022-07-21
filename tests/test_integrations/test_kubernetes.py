@@ -3,8 +3,8 @@ import unittest
 
 from opentelemetry.sdk import resources
 
-from pillar.integrations import kubernetes
-from pillar.trace import get_tracer
+from derive.integrations import kubernetes
+from derive.trace import get_tracer
 
 
 class KubernetesTestCase(unittest.TestCase):

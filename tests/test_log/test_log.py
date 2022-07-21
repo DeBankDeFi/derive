@@ -1,5 +1,5 @@
 import unittest
-from pillar import logging
+from derive import logging
 
 
 class LoggingTestCase(unittest.TestCase):

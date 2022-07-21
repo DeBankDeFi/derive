@@ -4,13 +4,15 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
-      - '.cirrus.yml'
+      - 'README.md'
+      - '.github/workflows/release.yaml'
     branches:
       - main
   pull_request:
     paths-ignore:
       - 'docs/**'
       - 'README.md'
+      - '.github/workflows/release.yaml'
     branches:
       - '**'
 
@@ -76,7 +78,7 @@ jobs:
 
       - name: Run tests (with coverage)
         run: |
-          poetry run coverage run --source pillar -m pytest
+          poetry run coverage run --source derive -m pytest
           poetry run coverage xml
 
       - uses: codecov/codecov-action@v3

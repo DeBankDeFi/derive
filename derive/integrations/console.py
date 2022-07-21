@@ -4,8 +4,8 @@ from opentelemetry.sdk.trace.export import (
     ConsoleSpanExporter,
 )
 
-from pillar import trace
-from pillar.integrations import BaseIntegration
+from derive import trace
+from derive.integrations import BaseIntegration
 
 
 class Integration(BaseIntegration):

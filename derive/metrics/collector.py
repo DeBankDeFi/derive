@@ -4,7 +4,7 @@ from multiprocessing import Lock
 from typing import TYPE_CHECKING, Iterator
 
 if TYPE_CHECKING:
-    from pillar.metrics.metric.base import Metric
+    from derive.metrics.metric.base import Metric
 
 
 class GlobalCollector(type):
@@ -13,7 +13,7 @@ class GlobalCollector(type):
         cls._lock = Lock()
 
     def __call__(cls, *args, **kwargs):
-        from pillar.metrics.manager import metrics_mapping, manager
+        from derive.metrics.manager import metrics_mapping, manager
 
         m: Metric = super().__call__(*args, **kwargs)
         with cls._lock:
@@ -27,6 +27,6 @@ class GlobalCollector(type):
     @classmethod
     def collect(mcs) -> Iterator[Metric]:
         """Yields metrics from the collectors in the registry."""
-        from pillar.metrics.manager import metrics_mapping
+        from derive.metrics.manager import metrics_mapping
 
         yield from metrics_mapping.values()

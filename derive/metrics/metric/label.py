@@ -1,6 +1,6 @@
 from typing import Tuple, TypeVar, Generic, Type, Set
 
-from pillar.metrics.metric import base
+from derive.metrics.metric import base
 
 M = TypeVar("M", bound=base.Metric)
 
@@ -24,7 +24,7 @@ class _Metric(Generic[M], metaclass=_MetricMeta):
         All metrics can have labels, allowing grouping of related time series.
         Taking a counter as an example:
 
-            from pillar.metrics import Counter
+            from derive.metrics import Counter
 
             c = Counter('my_requests_total', 'HTTP Failures', {"method","endpoint"})
             c.labels(method="get", endpoint="/").inc()

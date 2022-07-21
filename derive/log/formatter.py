@@ -3,7 +3,7 @@ import time
 import typing
 from logging import Formatter
 
-from pillar.log.record import PillarLogRecord
+from derive.log.record import deriveLogRecord
 
 
 class DatetimeFormatter(Formatter):

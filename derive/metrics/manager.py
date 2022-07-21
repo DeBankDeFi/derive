@@ -5,8 +5,8 @@ from multiprocessing import Manager, process, set_start_method
 from multiprocessing.managers import SyncManager
 from typing import MutableMapping
 
-import pillar
-from pillar.metrics.metric.base import Metric, MetricValue, MetricValueProxy
+import derive
+from derive.metrics.metric.base import Metric, MetricValue, MetricValueProxy
 
 if sys.platform == "darwin":
     set_start_method("fork", force=True)
@@ -22,4 +22,4 @@ def _reset_children():
     process._children = set()
 
 
-pillar.register_after_fork(_reset_children)
+derive.register_after_fork(_reset_children)

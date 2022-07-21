@@ -2,8 +2,8 @@ import unittest
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 
 
-from pillar.metrics.metric import Counter
-from pillar.metrics.collector import GlobalCollector
+from derive.metrics.metric import Counter
+from derive.metrics.collector import GlobalCollector
 
 name = "test_collector"
 document = "Description of counter"

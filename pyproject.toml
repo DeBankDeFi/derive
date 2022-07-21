@@ -1,17 +1,26 @@
 [tool.poetry]
-name = "pillar"
+name = "derive"
 version = "0.1.0"
 description = "The Python Observability Toolkit"
 authors = ["DeBankDeFi <sre@debank.com>"]
 
 readme = "README.md"
 license = "MIT"
+homepage = "https://github.com/DeBankDeFi/derive"
+repository = "https://github.com/DeBankDeFi/derive"
+documentation = "https://github.com/DeBankDeFi/derive"
 
 keywords = ["python", "observability", "opentelemetry"]
 
 classifiers = [
-    "Topic :: Software Development :: The Python Observability Toolkit",
-    "Topic :: Software Development :: Libraries :: Python Modules"
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+
 ]
 [tool.poetry.dependencies]
 python = "^3.7,>=3.7.2"
@@ -45,8 +54,8 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
-files = "pillar"
-mypy_path = "pillar"
+files = "derive"
+mypy_path = "derive"
 ignore_missing_imports = true
 namespace_packages = true
 show_error_codes = true
