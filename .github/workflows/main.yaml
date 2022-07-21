@@ -74,8 +74,9 @@ jobs:
       - name: Run lint
         run: make lint
 
-      - name: Run tests
-        run: make coverage
+      - name: Run tests (with coverage)
+        run: |
+          poetry run pytest --cov .
 
       - uses: codecov/codecov-action@v3
         with:

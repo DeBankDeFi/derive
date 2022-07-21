@@ -39,6 +39,7 @@ opentelemetry-propagator-aws-xray = "1.0.1"
 opentelemetry-exporter-otlp = "1.11.1"
 protobuf = "^3.10"
 coverage = "^6.4.2"
+pytest-cov = "^3.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
