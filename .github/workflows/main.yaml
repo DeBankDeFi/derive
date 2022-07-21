@@ -1,11 +1,16 @@
 name: Tests
 
 on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '.cirrus.yml'
+    branches:
+      - main
   pull_request:
     paths-ignore:
       - 'docs/**'
       - 'README.md'
-      - '.github/workflows/docs.yml'
     branches:
       - '**'
 
@@ -70,4 +75,8 @@ jobs:
         run: make lint
 
       - name: Run tests
-        run: make test
+        run: make coverage
+
+      - uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
