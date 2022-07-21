@@ -3,8 +3,8 @@ import os
 from opentelemetry.sdk import resources
 from opentelemetry.sdk.trace import Resource
 
-from pillar import trace
-from pillar.integrations import BaseIntegration
+from derive import trace
+from derive.integrations import BaseIntegration
 
 
 class Integration(BaseIntegration):

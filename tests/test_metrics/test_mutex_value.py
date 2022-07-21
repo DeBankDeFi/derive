@@ -1,7 +1,7 @@
 import unittest
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 
-from pillar.metrics.manager import manager
+from derive.metrics.manager import manager
 
 v = manager.MetricValue()
 

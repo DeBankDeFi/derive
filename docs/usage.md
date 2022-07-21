@@ -10,29 +10,29 @@
 ```python
 from configalchemy import BaseConfig
 
-import pillar
-from pillar import logging
-from pillar.config import DefaultConfig
-from pillar.integrations import fluentbit
+import derive
+from derive import logging
+from derive.config import DefaultConfig
+from derive.integrations import fluentbit
 
 class FluentBitConfig(fluentbit.DefaultConfig):
     ENABLE = False
 
-class PillarConfig(DefaultConfig):
+class deriveConfig(DefaultConfig):
     AWS_XRAY_INTEGRATION_CONFIG = FluentBitConfig()
 
 
 class Config(BaseConfig):
     CONFIGALCHEMY_ENV_PREFIX = "TEST_"
 
-    PILLAR_CONFIG = PillarConfig()
+    derive_CONFIG = deriveConfig()
 
 
 config = Config()
-pillar.init(
-    config.PILLAR_CONFIG,
+derive.init(
+    config.derive_CONFIG,
     [
-        fluentbit.Integration(config.PILLAR_CONFIG.AWS_XRAY_INTEGRATION_CONFIG, config.PILLAR_CONFIG),
+        fluentbit.Integration(config.derive_CONFIG.AWS_XRAY_INTEGRATION_CONFIG, config.derive_CONFIG),
     ],
 )
 logging.info("Hello World") # will be sent to FluentBit
@@ -72,9 +72,9 @@ end
 ### Simplest Usage
 
 ```python
-import pillar
-from pillar.trace import trace
-pillar.init(pillar.DefaultConfig())
+import derive
+from derive.trace import trace
+derive.init(derive.DefaultConfig())
 
 with trace('my_trace'):
     # do something
@@ -87,31 +87,31 @@ with trace('my_trace'):
 ```python
 from configalchemy import BaseConfig
 
-import pillar
-from pillar.trace import trace
-from pillar.config import DefaultConfig
-from pillar.integrations import aws_xray, kubernetes
+import derive
+from derive.trace import trace
+from derive.config import DefaultConfig
+from derive.integrations import aws_xray, kubernetes
 
 
 class AWSXRayConfig(aws_xray.DefaultConfig):
     ENABLE = False
 
 
-class PillarConfig(DefaultConfig):
+class deriveConfig(DefaultConfig):
     AWS_XRAY_INTEGRATION_CONFIG = AWSXRayConfig()
 
 
 class Config(BaseConfig):
     CONFIGALCHEMY_ENV_PREFIX = "TEST_"
 
-    PILLAR_CONFIG = PillarConfig()
+    derive_CONFIG = deriveConfig()
 
 
 config = Config()
-pillar.init(
-    config.PILLAR_CONFIG,
+derive.init(
+    config.derive_CONFIG,
     [
-        aws_xray.Integration(config.PILLAR_CONFIG.AWS_XRAY_INTEGRATION_CONFIG, config.PILLAR_CONFIG),
+        aws_xray.Integration(config.derive_CONFIG.AWS_XRAY_INTEGRATION_CONFIG, config.derive_CONFIG),
         kubernetes.Integration(),
     ],
 )
@@ -151,11 +151,11 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pillar-test-config
+  name: derive-test-config
 data:
   config.json: |-
     {
-      "PILLAR_CONFIG": {
+      "derive_CONFIG": {
         "AWS_XRAY_INTEGRATION_CONFIG": {
           "ENABLE": true,
           "OTLP_ENDPOINT": "<your otlp endpoint>"
@@ -167,8 +167,8 @@ data:
 ## metrics
 
 ```python
-from pillar.metrics import Counter, Summary, Gauge, Histogram
-from pillar.metrics.exporter import PrometheusExporter
+from derive.metrics import Counter, Summary, Gauge, Histogram
+from derive.metrics.exporter import PrometheusExporter
 
 c = Counter("my_failures_total", "Description of counter")
 c.inc()  # Increment by 1

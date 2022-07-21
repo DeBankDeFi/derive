@@ -1,4 +1,4 @@
-from pillar.metrics.collector import GlobalCollector
+from derive.metrics.collector import GlobalCollector
 import typing
 
 CONTENT_TYPE_LATEST = "text/plain; version=0.0.4; charset=utf-8"

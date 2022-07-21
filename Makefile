@@ -52,10 +52,10 @@ clean-build: ## remove build artifacts
 	find . -name '*.egg' -exec rm -f {} +
 
 fmt:
-	poetry run black pillar tests
+	poetry run black derive tests
 
 lint: ## statick check
-	poetry run black --check tests pillar
+	poetry run black --check tests derive
 
 	poetry run mypy
 
@@ -63,7 +63,7 @@ test: ## run tests quickly with the default Python
 	poetry run pytest
 
 coverage: ## check code coverage quickly with the default Python
-	poetry run coverage run --source pillar -m pytest
+	poetry run coverage run --source derive -m pytest
 	poetry run coverage report -m
 	poetry run coverage html
 	$(BROWSER) htmlcov/index.html

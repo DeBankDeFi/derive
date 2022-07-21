@@ -18,9 +18,9 @@ from logging import (
 )
 from types import FrameType
 
-from pillar.log.formatter import DatetimeFormatter
-from pillar.log.record import PillarLogRecord
-from pillar.log.types import ArgsType, SysExcInfoType
+from derive.log.formatter import DatetimeFormatter
+from derive.log.record import deriveLogRecord
+from derive.log.types import ArgsType, SysExcInfoType
 
 __all__ = [
     "CRITICAL",
@@ -40,13 +40,13 @@ __all__ = [
     "info",
     "log",
     "warning",
-    "PillarLogger",
-    "PillarLogRecord",
+    "deriveLogger",
+    "deriveLogRecord",
     "stderr_stream_handler",
 ]
 
 
-class PillarLogger(logging.Logger):
+class deriveLogger(logging.Logger):
     _f = lambda: None
     _srcfile = os.path.normcase(_f.__code__.co_filename)
 
@@ -62,8 +62,8 @@ class PillarLogger(logging.Logger):
         func: typing.Optional[str] = None,
         extra: typing.Optional[typing.Mapping[str, object]] = None,
         sinfo: typing.Optional[str] = None,
-    ) -> PillarLogRecord:
-        rv = PillarLogRecord(
+    ) -> deriveLogRecord:
+        rv = deriveLogRecord(
             name, level, fn, lno, msg, args, exc_info, func, sinfo, extra
         )
         return rv
@@ -102,10 +102,10 @@ class PillarLogger(logging.Logger):
 stderr_stream_handler = logging.StreamHandler(sys.stderr)
 stderr_stream_handler.setFormatter(DatetimeFormatter())
 
-root = PillarLogger("root", logging.INFO)
+root = deriveLogger("root", logging.INFO)
 root.addHandler(stderr_stream_handler)
 manager = logging.Manager(typing.cast(logging.RootLogger, root))
-manager.loggerClass = PillarLogger
+manager.loggerClass = deriveLogger
 
 
 def getLogger(name: str = "") -> Logger:

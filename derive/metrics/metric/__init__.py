@@ -1,8 +1,8 @@
 import typing
 from typing import overload, Set, Optional, Tuple
 
-from pillar.metrics.metric import base
-from pillar.metrics.metric import label
+from derive.metrics.metric import base
+from derive.metrics.metric import label
 
 
 class Counter:
@@ -17,7 +17,7 @@ class Counter:
 
     An example for a Counter:
 
-        from pillar.metrics import Counter
+        from derive.metrics import Counter
 
         c = Counter('my_failures_total', 'Description of counter')
         c.inc()     # Increment by 1
@@ -62,14 +62,14 @@ class Summary:
 
     Example for a Summary:
 
-        from pillar.metrics import Summary
+        from derive.metrics import Summary
 
         s = Summary('request_size_bytes', 'Request size (bytes)')
         s.observe(512)  # Observe 512 (bytes)
 
     Example for a Summary using time:
 
-        from pillar.metrics import Summary
+        from derive.metrics import Summary
 
         REQUEST_TIME = Summary('response_latency_seconds', 'Response latency (seconds)')
 
@@ -112,7 +112,7 @@ class Gauge:
 
      Gauges can go both up and down.
 
-        from pillar.metrics import Gauge
+        from derive.metrics import Gauge
 
         g = Gauge('my_inprogress_requests', 'Description of gauge')
         g.inc()      # Increment by 1
@@ -157,7 +157,7 @@ class Histogram:
 
     Example for a Histogram:
 
-        from pillar.metrics import Histogram
+        from derive.metrics import Histogram
 
         h = Histogram('request_size_bytes_histogram', 'Request size (bytes)')
         h.observe(512)  # Observe 512 (bytes)

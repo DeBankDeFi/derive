@@ -1,14 +1,14 @@
-# Pillar: The Python Observability Toolkit
+# Derive: The Python Observability Toolkit
 
-[![Tests Status](https://github.com/DeBankDeFi/pillar/workflows/Tests/badge.svg?branch=main&event=push)](https://github.com/DeBankDeFi/pillar/actions?query=workflow%3ATests+branch%3Amain+event%3Apush)
-[![codecov](https://codecov.io/gh/DeBankDeFi/pillar/branch/main/graph/badge.svg?token=LUVTL8L1B8)](https://codecov.io/gh/DeBankDeFi/pillar)
-## What is Pillar?
+[![Tests Status](https://github.com/DeBankDeFi/derive/workflows/Tests/badge.svg?branch=main&event=push)](https://github.com/DeBankDeFi/derive/actions?query=workflow%3ATests+branch%3Amain+event%3Apush)
+[![codecov](https://codecov.io/gh/DeBankDeFi/derive/branch/main/graph/badge.svg?token=LUVTL8L1B8)](https://codecov.io/gh/DeBankDeFi/derive)
+## What is Derive?
 
-Pillar is a pure configuration-oriented Python Observability Toolkit 
-based on OpenTelemetry, Prometheus, and FluentBit. 
+derive based on OpenTelemetry, Prometheus, and FluentBit 
+is a pure configuration-oriented Python Observability Toolkit making your systems observable.
 Building your trace, logging, and metrics in a simple and easy way in your production and development Phase.
 
-## How to use Pillar
+## How to use Derive
 
 ### Documentation
 

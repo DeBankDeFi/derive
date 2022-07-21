@@ -3,11 +3,11 @@ import sys
 import typing
 from threading import Lock
 
-from pillar import log as logging
-from pillar import trace
-from pillar.config import DefaultConfig
-from pillar.config import DefaultConfig
-from pillar.integrations import BaseIntegration
+from derive import log as logging
+from derive import trace
+from derive.config import DefaultConfig
+from derive.config import DefaultConfig
+from derive.integrations import BaseIntegration
 
 _installer_lock = Lock()
 _installed_integrations: typing.Set[str] = set()

@@ -3,7 +3,7 @@ import unittest
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.trace import INVALID_SPAN
 
-from pillar.trace import trace, set_provider
+from derive.trace import trace, set_provider
 from tests import async_test
 
 

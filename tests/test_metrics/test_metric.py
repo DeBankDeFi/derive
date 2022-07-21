@@ -1,12 +1,12 @@
 import unittest
 from time import sleep
-from pillar.metrics import (
+from derive.metrics import (
     Counter,
     Summary,
     Gauge,
     Histogram,
 )
-from pillar.metrics.metric.base import Sample, float_to_string
+from derive.metrics.metric.base import Sample, float_to_string
 
 
 class MetricTestCase(unittest.TestCase):
