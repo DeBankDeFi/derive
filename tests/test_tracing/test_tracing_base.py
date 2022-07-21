@@ -30,7 +30,7 @@ class TracingBaseTestCase(unittest.TestCase):
     def test_sync_decorator(self):
         @trace("test")
         def test():
-            self.assertIsNot(INVALID_SPAN, trace.get_current_span())
+            self.assertIsNotNone(trace.get_current_span())
 
         test()
 

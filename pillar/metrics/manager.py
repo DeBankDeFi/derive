@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import os
 import sys
 from multiprocessing import Manager, process, set_start_method
 from multiprocessing.managers import SyncManager
 from typing import MutableMapping
 
+import pillar
 from pillar.metrics.metric.base import Metric, MetricValue, MetricValueProxy
 
 if sys.platform == "darwin":
@@ -22,12 +22,4 @@ def _reset_children():
     process._children = set()
 
 
-try:
-    import uwsgidecorators
-except ImportError:
-    pass
-else:
-    uwsgidecorators.postfork(_reset_children)
-
-if not sys.platform.startswith("win"):
-    os.register_at_fork(after_in_child=_reset_children)
+pillar.register_after_fork(_reset_children)

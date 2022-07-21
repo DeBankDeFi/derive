@@ -39,12 +39,18 @@ class trace:
     """
 
     @staticmethod
-    def get_current_span() -> Span:
-        return opentelemetry_trace.get_current_span()
+    def get_current_span() -> typing.Optional[Span]:
+        span = opentelemetry_trace.get_current_span()
+        if span is opentelemetry_trace.INVALID_SPAN:
+            return None
+        return span
 
-    @staticmethod
-    def get_current_span_context() -> SpanContext:
-        return opentelemetry_trace.get_current_span().get_span_context()
+    @classmethod
+    def get_current_span_context(cls) -> typing.Optional[SpanContext]:
+        span = cls.get_current_span()
+        if span is not None:
+            return span.get_span_context()
+        return None
 
     @staticmethod
     def set_attribute(key: str, value: types.AttributeValue) -> None:

@@ -63,9 +63,9 @@ test: ## run tests quickly with the default Python
 	poetry run pytest
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source pillar -m unittest discover -s tests
-	coverage report -m
-	coverage html
+	poetry run coverage run --source pillar -m pytest
+	poetry run coverage report -m
+	poetry run coverage html
 	$(BROWSER) htmlcov/index.html
 
 init: ## init development environment

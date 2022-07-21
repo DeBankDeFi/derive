@@ -1,5 +1,72 @@
 # Usage
 
+
+## logging
+
+### logging to FluentBit with TCP
+
+#### Code Example
+
+```python
+from configalchemy import BaseConfig
+
+import pillar
+from pillar import logging
+from pillar.config import DefaultConfig
+from pillar.integrations import fluentbit
+
+class FluentBitConfig(fluentbit.DefaultConfig):
+    ENABLE = False
+
+class PillarConfig(DefaultConfig):
+    AWS_XRAY_INTEGRATION_CONFIG = FluentBitConfig()
+
+
+class Config(BaseConfig):
+    CONFIGALCHEMY_ENV_PREFIX = "TEST_"
+
+    PILLAR_CONFIG = PillarConfig()
+
+
+config = Config()
+pillar.init(
+    config.PILLAR_CONFIG,
+    [
+        fluentbit.Integration(config.PILLAR_CONFIG.AWS_XRAY_INTEGRATION_CONFIG, config.PILLAR_CONFIG),
+    ],
+)
+logging.info("Hello World") # will be sent to FluentBit
+```
+
+#### FluentBif Config Example
+
+`fluent-bit -c fb.conf`
+
+- fb.conf:
+```text
+[INPUT]
+    Name tcp
+    Format json
+
+[FILTER]
+    Name lua
+    Match *
+    script filters.lua
+    call set_time
+
+[OUTPUT]
+    Name stdout
+    Match *
+```
+- filters.lua:
+```lua
+function set_time(tag, timestamp, record)
+    local timestamp = record["Timestamp"]
+    record["Timestamp"] = nil
+    return 1, timestamp, record
+end
+```
+
 ## trace
 
 ### Simplest Usage
@@ -15,7 +82,7 @@ with trace('my_trace'):
 ```
 ### AWS-X-Ray Support in Kubernetes
 
-code: 
+#### Code Example
 
 ```python
 from configalchemy import BaseConfig
@@ -44,7 +111,7 @@ config = Config()
 pillar.init(
     config.PILLAR_CONFIG,
     [
-        aws_xray.Integration(config.PILLAR_CONFIG.AWS_XRAY_INTEGRATION_CONFIG),
+        aws_xray.Integration(config.PILLAR_CONFIG.AWS_XRAY_INTEGRATION_CONFIG, config.PILLAR_CONFIG),
         kubernetes.Integration(),
     ],
 )
@@ -53,7 +120,7 @@ with trace('my_trace'):
     pass
 ```
 
-Kubernetes:
+#### Kubernetes Manifest Example
 
 ```yaml
 apiVersion: v1

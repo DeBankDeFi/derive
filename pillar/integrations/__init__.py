@@ -19,6 +19,10 @@ class BaseIntegration(ABC):
 
     def setup(self):
         self.setup_trace()
+        self.setup_logging()
 
     def setup_trace(self):
+        pass
+
+    def setup_logging(self):
         pass
