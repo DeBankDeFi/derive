@@ -76,7 +76,8 @@ jobs:
 
       - name: Run tests (with coverage)
         run: |
-          poetry run pytest --cov .
+          poetry run coverage run --source pillar -m pytest
+          poetry run coverage xml
 
       - uses: codecov/codecov-action@v3
         with:
