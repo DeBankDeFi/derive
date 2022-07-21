@@ -1,7 +1,9 @@
-import typing
-import sys
-import platform
 import os
+import platform
+import sys
+import typing
+
+import pillar
 
 if sys.platform == "darwin" and platform.machine() == "arm64":
     os.environ["GRPC_PYTHON_BUILD_SYSTEM_OPENSSL"] = "1"
@@ -36,8 +38,11 @@ class Integration(BaseIntegration):
     def identifier(self) -> str:
         return "aws-xray"
 
-    def __init__(self, config: DefaultConfig) -> None:
+    def __init__(
+        self, config: DefaultConfig, pillar_config: pillar.DefaultConfig
+    ) -> None:
         self.config = config
+        self.pillar_config = pillar_config
 
     def setup_trace(self):
         if self.config.ENABLE:
@@ -50,6 +55,11 @@ class Integration(BaseIntegration):
             origin_tracer = trace.get_tracer()
             resource: typing.Optional[resources.Resource] = getattr(
                 origin_tracer, "resource", resources.Resource.create({})
+            )
+            resource = resource.merge(
+                resources.Resource.create(
+                    {resources.SERVICE_NAME: self.pillar_config.SERVICE_NAME}
+                )
             )
             tracer_provider = TracerProvider(
                 sampler=sampler,

@@ -1,5 +1,9 @@
+import typing
+
 from configalchemy import BaseConfig
 
 
 class DefaultConfig(BaseConfig):
-    PILLAR_SERVICE_NAME = "pillar"
+    SERVICE_NAME = "pillar"
+
+    STATIC_RESOURCES: typing.Mapping[str, str] = {}
