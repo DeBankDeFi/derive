@@ -19,7 +19,7 @@ from logging import (
 from types import FrameType
 
 from derive.log.formatter import DatetimeFormatter
-from derive.log.record import deriveLogRecord
+from derive.log.record import DeriveLogRecord
 from derive.log.types import ArgsType, SysExcInfoType
 
 __all__ = [
@@ -40,13 +40,13 @@ __all__ = [
     "info",
     "log",
     "warning",
-    "deriveLogger",
-    "deriveLogRecord",
+    "DeriveLogger",
+    "DeriveLogRecord",
     "stderr_stream_handler",
 ]
 
 
-class deriveLogger(logging.Logger):
+class DeriveLogger(logging.Logger):
     _f = lambda: None
     _srcfile = os.path.normcase(_f.__code__.co_filename)
 
@@ -62,8 +62,8 @@ class deriveLogger(logging.Logger):
         func: typing.Optional[str] = None,
         extra: typing.Optional[typing.Mapping[str, object]] = None,
         sinfo: typing.Optional[str] = None,
-    ) -> deriveLogRecord:
-        rv = deriveLogRecord(
+    ) -> DeriveLogRecord:
+        rv = DeriveLogRecord(
             name, level, fn, lno, msg, args, exc_info, func, sinfo, extra
         )
         return rv
@@ -102,10 +102,10 @@ class deriveLogger(logging.Logger):
 stderr_stream_handler = logging.StreamHandler(sys.stderr)
 stderr_stream_handler.setFormatter(DatetimeFormatter())
 
-root = deriveLogger("root", logging.INFO)
+root = DeriveLogger("root", logging.INFO)
 root.addHandler(stderr_stream_handler)
 manager = logging.Manager(typing.cast(logging.RootLogger, root))
-manager.loggerClass = deriveLogger
+manager.loggerClass = DeriveLogger
 
 
 def getLogger(name: str = "") -> Logger:

@@ -14,7 +14,8 @@ class Config(aws_xray.DefaultConfig):
 class AWSXrayTestCase(unittest.TestCase):
     def test_setup_trace(self):
         derive_config = derive.DefaultConfig()
-        aws_xray.Integration(Config(), derive_config).setup_trace()
+        derive.init(derive_config)
+        aws_xray.Integration(Config()).setup_trace()
         tracer = get_tracer()
         resource: resources.Resource = getattr(tracer, "resource")
         self.assertIsNotNone(resource)

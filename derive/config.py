@@ -1,9 +1,8 @@
-import typing
-
 from configalchemy import BaseConfig
+from opentelemetry.sdk.resources import Attributes
 
 
 class DefaultConfig(BaseConfig):
     SERVICE_NAME = "derive"
 
-    STATIC_RESOURCES: typing.Mapping[str, str] = {}
+    STATIC_RESOURCES: Attributes = {}

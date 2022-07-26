@@ -2,7 +2,6 @@ import json
 import logging as builtin_logging
 import os
 import socket
-import sys
 import typing
 from logging import LogRecord
 from logging.handlers import QueueHandler
@@ -10,6 +9,7 @@ from queue import Queue, Empty
 from threading import Thread, Lock
 
 from configalchemy import BaseConfig
+
 import derive
 from derive import logging
 from derive.integrations import BaseIntegration
@@ -48,13 +48,9 @@ class FluentBitLoggingQueueListener:
     _sentinel = None
     log_buffer: str
 
-    def __init__(
-        self, queue: Queue, config: DefaultConfig, derive_config: derive.DefaultConfig
-    ):
+    def __init__(self, queue: Queue, config: DefaultConfig):
         self.queue = queue
         self.config = config
-        self.derive_config = derive_config
-        self.resources = {k: v for k, v in self.derive_config.STATIC_RESOURCES.items()}
         self.reset_log_buffer()
 
         self.logger = builtin_logging.getLogger(__name__)
@@ -71,7 +67,7 @@ class FluentBitLoggingQueueListener:
     def check_log_size(self) -> bool:
         return len(self.log_buffer) >= self.config.BATCH_SIZE
 
-    def format(self, record: logging.deriveLogRecord) -> str:
+    def format(self, record: logging.DeriveLogRecord) -> str:
         attributes: typing.Dict[str, str] = {}
         for attribute in self.BUILTIN_RECORD_ATTRS:
             attr_value = getattr(record, attribute)
@@ -83,13 +79,15 @@ class FluentBitLoggingQueueListener:
             "Body": record.msg,
             "Timestamp": record.created,
             "Attributes": {**attributes, **record.attributes},
-            "Resources": self.resources,
+            "Resources": {
+                k: str(v) for k, v in derive.get_global_resources().attributes.items()
+            },
         }
         if getattr(record, "trace_id") is not None:
             data["TraceId"] = record.trace_id
         return json.dumps(data, indent=None, separators=(",", ":"))
 
-    def handle(self, record: logging.deriveLogRecord) -> None:
+    def handle(self, record: logging.DeriveLogRecord) -> None:
         self.log_buffer += self.format(record) + self.SEPARATOR
         if self.check_log_size():
             self.put_logs()
@@ -101,7 +99,7 @@ class FluentBitLoggingQueueListener:
             self.reset_log_buffer()
 
     def _send(self) -> bool:
-        self.logger.info("sending logs to fluentbit")
+        self.logger.debug("sending logs to fluentbit")
         try:
             conn = socket.create_connection(
                 (self.config.TCP_HOST, self.config.TCP_PORT), 0.5
@@ -181,9 +179,8 @@ class FluentBitLoggingQueueHandler(QueueHandler):
 
 
 class Integration(BaseIntegration):
-    def __init__(self, config: DefaultConfig, derive_config: derive.DefaultConfig):
+    def __init__(self, config: DefaultConfig):
         self.config = config
-        self.derive_config = derive_config
 
     @property
     def identifier(self) -> str:
@@ -194,7 +191,7 @@ class Integration(BaseIntegration):
             return
         root = logging.getLogger()
         queue = Queue()
-        ql = FluentBitLoggingQueueListener(queue, self.config, self.derive_config)
+        ql = FluentBitLoggingQueueListener(queue, self.config)
         root.addHandler(FluentBitLoggingQueueHandler(ql))
         ql.start()
         derive.register_after_fork(lambda: ql.ensure_thread())
