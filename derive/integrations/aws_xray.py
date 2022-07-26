@@ -1,13 +1,4 @@
-import os
-import platform
-import sys
 import typing
-
-import derive
-
-if sys.platform == "darwin" and platform.machine() == "arm64":
-    os.environ["GRPC_PYTHON_BUILD_SYSTEM_OPENSSL"] = "1"
-    os.environ["GRPC_PYTHON_BUILD_SYSTEM_ZLIB"] = "1"
 
 from configalchemy import BaseConfig
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
@@ -23,6 +14,7 @@ from opentelemetry.sdk.trace.sampling import (
     ALWAYS_ON,
 )
 
+import derive
 from derive import trace
 from derive.integrations import BaseIntegration
 
@@ -38,11 +30,8 @@ class Integration(BaseIntegration):
     def identifier(self) -> str:
         return "aws-xray"
 
-    def __init__(
-        self, config: DefaultConfig, derive_config: derive.DefaultConfig
-    ) -> None:
+    def __init__(self, config: DefaultConfig) -> None:
         self.config = config
-        self.derive_config = derive_config
 
     def setup_trace(self):
         if self.config.ENABLE:
@@ -56,11 +45,7 @@ class Integration(BaseIntegration):
             resource: typing.Optional[resources.Resource] = getattr(
                 origin_tracer, "resource", resources.Resource.create({})
             )
-            resource = resource.merge(
-                resources.Resource.create(
-                    {resources.SERVICE_NAME: self.derive_config.SERVICE_NAME}
-                )
-            )
+            resource = resource.merge(derive.get_global_resources())
             tracer_provider = TracerProvider(
                 sampler=sampler,
                 resource=resource,

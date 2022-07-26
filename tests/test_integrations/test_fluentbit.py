@@ -1,13 +1,12 @@
 import unittest
 from unittest import mock
 
-import derive
 from derive import logging
 from derive.integrations import fluentbit
 
 
 class FluentBitTestCase(unittest.TestCase):
-    old_root: logging.deriveLogger
+    old_root: logging.DeriveLogger
 
     def setUp(self):
         self.old_root = logging.root
@@ -22,7 +21,7 @@ class FluentBitTestCase(unittest.TestCase):
             m_create_connection.return_value = conn
             config = fluentbit.DefaultConfig()
             config.ENABLE = True
-            fluentbit.Integration(config, derive.DefaultConfig()).setup_logging()
+            fluentbit.Integration(config).setup_logging()
             logging.info("test")
             handler: fluentbit.FluentBitLoggingQueueHandler = logging.root.handlers[1]
             self.assertIsInstance(handler, fluentbit.FluentBitLoggingQueueHandler)

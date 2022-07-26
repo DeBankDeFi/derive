@@ -3,8 +3,6 @@ import time
 import typing
 from logging import Formatter
 
-from derive.log.record import deriveLogRecord
-
 
 class DatetimeFormatter(Formatter):
     default_time_format = "%Y-%m-%d %H:%M:%S"

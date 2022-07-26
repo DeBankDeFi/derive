@@ -5,7 +5,7 @@ from derive.log.types import ArgsType, SysExcInfoType
 from derive.trace import trace
 
 
-class deriveLogRecord(logging.LogRecord):
+class DeriveLogRecord(logging.LogRecord):
     trace_id: typing.Optional[str]
     attributes: typing.Dict[str, str]
 
