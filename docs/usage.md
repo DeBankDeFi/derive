@@ -20,6 +20,14 @@ logging.info("test")
 import derive
 from derive.trace import trace
 
+@trace("test")
+def test():
+    pass
+
+@trace("async_test")
+async def async_test():
+    pass
+
 with trace('my_trace'):
     # do something
     pass
@@ -142,6 +150,38 @@ derive.init(
     ],
 )
 ```
+### OLTP Config
+
+reference: https://aws-otel.github.io/docs/setup/eks
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  memory_limiter:
+    limit_mib: 100
+    check_interval: 5s
+
+exporters:
+  awsxray:
+    region: ap-northeast-1
+
+extensions:
+  awsproxy:
+
+service:
+  extensions: [awsproxy]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter]
+      exporters: [awsxray]
+```
+
 
 ## Kubernetes
 
