@@ -68,24 +68,7 @@ class FluentBitLoggingQueueListener:
         return len(self.log_buffer) >= self.config.BATCH_SIZE
 
     def format(self, record: logging.DeriveLogRecord) -> str:
-        attributes: typing.Dict[str, str] = {}
-        for attribute in self.BUILTIN_RECORD_ATTRS:
-            attr_value = getattr(record, attribute)
-            if attr_value:
-                attributes[f"builtin_{attribute}"] = str(attr_value)
-
-        data = {
-            "Severity": record.levelname,
-            "Body": record.msg,
-            "Timestamp": record.created,
-            "Attributes": {**attributes, **record.attributes},
-            "Resources": {
-                k: str(v) for k, v in derive.get_global_resources().attributes.items()
-            },
-        }
-        if getattr(record, "trace_id") is not None:
-            data["TraceId"] = record.trace_id
-        return json.dumps(data, indent=None, separators=(",", ":"))
+        return json.dumps(record.to_log_data(), indent=None, separators=(",", ":"))
 
     def handle(self, record: logging.DeriveLogRecord) -> None:
         self.log_buffer += self.format(record) + self.SEPARATOR
