@@ -13,7 +13,7 @@ class Integration(BaseIntegration):
     def identifier(self) -> str:
         return "console"
 
-    def setup_trace(self):
+    def setup(self):
         provider = TracerProvider()
         processor = BatchSpanProcessor(ConsoleSpanExporter())
         provider.add_span_processor(processor)

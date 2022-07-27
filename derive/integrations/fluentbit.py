@@ -78,24 +78,16 @@ class FluentBitLoggingQueueListener:
     def put_logs(self):
         if not len(self.log_buffer):
             return
-        if self._send():
-            self.reset_log_buffer()
+        self._send()
+        self.reset_log_buffer()
 
-    def _send(self) -> bool:
+    def _send(self) -> None:
         self.logger.debug("sending logs to fluentbit")
-        try:
-            conn = socket.create_connection(
-                (self.config.TCP_HOST, self.config.TCP_PORT), 0.5
-            )
-        except socket.timeout:
-            self.logger.exception("sending logs to fluentbit error")
-            return False
-        try:
+        with socket.create_connection(
+            (self.config.TCP_HOST, self.config.TCP_PORT), 0.5
+        ) as conn:
             conn.sendall(self.log_buffer.encode("utf-8"))
-        except Exception:
-            self.logger.exception("sending logs to fluentbit error")
-            return False
-        return True
+        self.logger.debug("sent logs to fluentbit")
 
     def _monitor(self):
         while True:
@@ -163,18 +155,21 @@ class FluentBitLoggingQueueHandler(QueueHandler):
 
 class Integration(BaseIntegration):
     def __init__(self, config: DefaultConfig):
+        self.handler: typing.Optional[FluentBitLoggingQueueHandler] = None
+        self.ql: typing.Optional[FluentBitLoggingQueueListener] = None
         self.config = config
 
     @property
     def identifier(self) -> str:
         return "fluentbit"
 
-    def setup_logging(self):
+    def setup(self):
         if not self.config.ENABLE:
             return
         root = logging.getLogger()
         queue = Queue()
-        ql = FluentBitLoggingQueueListener(queue, self.config)
-        root.addHandler(FluentBitLoggingQueueHandler(ql))
-        ql.start()
-        derive.register_after_fork(lambda: ql.ensure_thread())
+        self.ql = FluentBitLoggingQueueListener(queue, self.config)
+        self.handler = FluentBitLoggingQueueHandler(self.ql)
+        root.addHandler(self.handler)
+        self.ql.start()
+        derive.register_after_fork(lambda: self.ql.ensure_thread())

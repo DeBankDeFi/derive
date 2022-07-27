@@ -30,7 +30,7 @@ class Integration(BaseIntegration):
     def identifier(self) -> str:
         return "kubernetes"
 
-    def setup_trace(self):
+    def setup(self):
         tracer = trace.get_tracer()
         resource: Resource = getattr(tracer, "resource", Resource.create())
         setattr(tracer, "resource", resource.merge(self.k8s_resource))

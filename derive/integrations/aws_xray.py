@@ -33,7 +33,7 @@ class Integration(BaseIntegration):
     def __init__(self, config: DefaultConfig) -> None:
         self.config = config
 
-    def setup_trace(self):
+    def setup(self):
         if self.config.ENABLE:
             otlp_exporter = OTLPSpanExporter(endpoint=self.config.OTLP_ENDPOINT)
             span_processor = BatchSpanProcessor(otlp_exporter)
