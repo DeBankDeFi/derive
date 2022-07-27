@@ -13,5 +13,5 @@ class Integration(BaseIntegration):
     def identifier(self) -> str:
         return "requests"
 
-    def setup_trace(self):
+    def setup(self):
         RequestsInstrumentor().instrument()

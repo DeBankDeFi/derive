@@ -18,15 +18,16 @@ class FluentBitTestCase(unittest.TestCase):
         with mock.patch("socket.create_connection") as m_create_connection:
             m_sendall = mock.MagicMock()
             conn = mock.MagicMock(sendall=m_sendall)
+            conn.__enter__ = mock.MagicMock(return_value=conn)
+            conn.__exit__ = mock.MagicMock(return_value=False)
             m_create_connection.return_value = conn
             config = fluentbit.DefaultConfig()
             config.ENABLE = True
-            fluentbit.Integration(config).setup_logging()
+            integration = fluentbit.Integration(config)
+            integration.setup()
             logging.info("test")
-            handler: fluentbit.FluentBitLoggingQueueHandler = logging.root.handlers[1]
-            self.assertIsInstance(handler, fluentbit.FluentBitLoggingQueueHandler)
-            handler.flush()
-            self.assertFalse(handler.listener.is_alive)
+            integration.handler.flush()
+            self.assertFalse(integration.handler.listener.is_alive)
             m_create_connection.assert_called_once_with(
                 (config.TCP_HOST, config.TCP_PORT), 0.5
             )
