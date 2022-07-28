@@ -17,7 +17,6 @@ logging.info("test")
 ## trace
 
 ```python
-import derive
 from derive.trace import trace
 
 @trace("test")
@@ -56,7 +55,9 @@ print(PrometheusExporter.generate_latest())
 
 # Integrations
 
-## FluentBit TCP Input
+## FluentBit
+
+Send log to FluentBit with TCP Input.
 
 ### Code Example
 
@@ -150,7 +151,7 @@ derive.init(
     ],
 )
 ```
-### OLTP Config
+### OLTP Config Example
 
 reference: https://aws-otel.github.io/docs/setup/eks
 
@@ -217,7 +218,7 @@ spec:
 
 # Best Practices
 
-### Support aws x-ray and fluent bit in kubernetes
+### Support aws x-ray and FluentBit in kubernetes
 
 #### Code Example
 
